@@ -10,7 +10,7 @@
 ## Главное окно приложения
 
 
-![](https://i128.fastpic.org/thumb/2026/0715/49/46b0fe7652bd921e8b9100ce452c2d49.jpeg)
+![](https://fastpic.org/fullview/128/2026/0715/46b0fe7652bd921e8b9100ce452c2d49.png.html)
 
 
 ##
