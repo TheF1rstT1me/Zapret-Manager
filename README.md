@@ -9,4 +9,4 @@
 
 ## Окно настроек
 
-[](https://i128.fastpic.org/big/2026/0715/12/1f82f413e12ec02427ead60d61cc8f12.png)
+![](https://i128.fastpic.org/big/2026/0715/12/1f82f413e12ec02427ead60d61cc8f12.png)
