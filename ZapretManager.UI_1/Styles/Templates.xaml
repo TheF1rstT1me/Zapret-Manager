@@ -1,0 +1,86 @@
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:local="clr-namespace:ZapretManager.UI_1"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+    
+    
+        <DataTemplate DataType="{x:Type local:ToggleSetting}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Title}" Style="{StaticResource BasicTextBlock}" Margin="0,0,0,10"  
+                               HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5"/>
+                <ui:ToggleSwitch Style="{StaticResource SwitchToggleZapret}" HorizontalAlignment="Center" IsOn="{Binding IsOn, Mode=TwoWay}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:FolderSetting}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Title}" Style="{StaticResource BasicTextBlock}" Margin="0,0,0,10"  
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5"/>
+
+                <Button Style="{StaticResource FolderButton}" Padding="10" MinWidth="199" MinHeight="30" 
+                        Command="{Binding DataContext.FolderButtonCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                        CommandParameter="{Binding}"
+                >
+                    <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width ="Auto"/>
+                                <ColumnDefinition Width ="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Height="20" Width="20"
+                                    Source="/ZapretManager.UI_1;component/Assets/Logos/folder.png"
+                                    Stretch="UniformToFill" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" Style="{StaticResource BasicTextBlock}" FontSize="18" Text="{Binding PathFolder}" HorizontalAlignment="Right" 
+                                    VerticalAlignment="Center" Padding="7"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:DropdownSetting}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Title}" Style="{StaticResource BasicTextBlock}" Margin="0,0,0,10"  
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5"/>
+                
+                <ui:DropDownButton Content="{Binding SelectedOption}" HorizontalAlignment="Center" Margin="0,0,0,10"
+                            Style="{StaticResource BasicDropDown}">
+                    <ui:DropDownButton.Flyout>
+                        <ui:Flyout Placement="Bottom" ShowMode="Transient">
+                            <ui:Flyout.FlyoutPresenterStyle>
+                                <StaticResource ResourceKey="BasicPresent"/>
+                            </ui:Flyout.FlyoutPresenterStyle>
+
+
+                            <ListBox ItemsSource="{Binding Options}" 
+                             SelectedItem="{Binding SelectedOption, Mode=TwoWay}"
+                             Background="#242F46" 
+                             BorderThickness="0"
+                             MinWidth="75">
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedValue">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.ChangeVersionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <!-- Стиль элемента списка -->
+                                    <TextBlock Text="{Binding}" Style="{StaticResource HeaderTextBlock}" 
+                                                   FontSize="12" Padding="2" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                            </ListBox>
+                        </ui:Flyout>
+                    </ui:DropDownButton.Flyout>
+                </ui:DropDownButton>
+                
+            </StackPanel>
+        </DataTemplate>
+
+    
+</ResourceDictionary>

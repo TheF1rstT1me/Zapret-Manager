@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ZapretManager.Core_/ZapretManager.Core_.csproj" />
+  <Project Path="ZapretManager.Infrastructure_/ZapretManager.Infrastructure_.csproj" />
+  <Project Path="ZapretManager.UI_1/ZapretManager.UI_1.csproj" />
+</Solution>

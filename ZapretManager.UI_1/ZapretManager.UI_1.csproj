@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Buttons\ButtonBGDef.png" />
+    <None Remove="Assets\Buttons\ButtonBGHover.png" />
+    <None Remove="Assets\Buttons\ButtonWithoutBG.png" />
+    <None Remove="Assets\Buttons\ButtonWithoutBGCliked.png" />
+    <None Remove="Assets\Buttons\ButtonWithoutBGHovered.png" />
+    <None Remove="Assets\Buttons\close.png" />
+    <None Remove="Assets\Buttons\closeHov.png" />
+    <None Remove="Assets\Buttons\minimize.png" />
+    <None Remove="Assets\Buttons\minimizeHov.png" />
+    <None Remove="Assets\Logos\bigtop_updates.png" />
+    <None Remove="Assets\Logos\discordLogo.png" />
+    <None Remove="Assets\Logos\folder.png" />
+    <None Remove="Assets\Logos\manufacturing.png" />
+    <None Remove="Assets\Logos\telegramLogo.png" />
+    <None Remove="Assets\Main.png" />
+    <None Remove="Styles\Fonts\Outfit-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZapretManager.Core_\ZapretManager.Core_.csproj" />
+    <ProjectReference Include="..\ZapretManager.Infrastructure_\ZapretManager.Infrastructure_.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Buttons\ButtonBGDef.png" />
+    <Resource Include="Assets\Buttons\ButtonBGHover.png" />
+    <Resource Include="Assets\Buttons\ButtonWithoutBG.png" />
+    <Resource Include="Assets\Buttons\ButtonWithoutBGCliked.png" />
+    <Resource Include="Assets\Buttons\ButtonWithoutBGHovered.png" />
+    <Resource Include="Assets\Buttons\close.png" />
+    <Resource Include="Assets\Buttons\closeHov.png" />
+    <Resource Include="Assets\Buttons\minimize.png" />
+    <Resource Include="Assets\Buttons\minimizeHov.png" />
+    <Resource Include="Assets\Logos\bigtop_updates.png" />
+    <Resource Include="Assets\Logos\discordLogo.png" />
+    <Resource Include="Assets\Logos\folder.png" />
+    <Resource Include="Assets\Logos\manufacturing.png" />
+    <Resource Include="Assets\Logos\telegramLogo.png" />
+    <Resource Include="Assets\Main.png" />
+    <Resource Include="Styles\Fonts\Outfit-Regular.ttf" />
+  </ItemGroup>
+
+</Project>
