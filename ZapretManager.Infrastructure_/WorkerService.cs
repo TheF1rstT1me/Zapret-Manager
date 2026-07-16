@@ -16,7 +16,7 @@ namespace ZapretManager.Infrastructure_
         private CancellationTokenSource _downloadCtsToken = new();
         private bool _isBusy = false;
 
-        private string ValidateProcessName(string process)
+        private static string ValidateProcessName(string process)
         {
             bool isExist = Core_.Models.Constants.processesNames.TryGetValue(process, out string? processName);
             if (isExist) return processName!;
@@ -91,6 +91,7 @@ namespace ZapretManager.Infrastructure_
             string ListsSaved = "";
 
             await StopProcesses(Core_.Models.Constants.processesNames["Zapret"]);
+            RunSc("stop", "WinDivert");
 
             string? downloadedFile = await DownloadAsset(Core_.Models.Constants.repos["Zapret"], TagNameVersion, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
             if (downloadedFile == null) return (false, null);
@@ -174,7 +175,7 @@ namespace ZapretManager.Infrastructure_
             }
         }
 
-        private async Task<int?> StartProcess(string exePath, string arguments)
+        private static async Task<int?> StartProcess(string exePath, string arguments)
         {
             try
             {
@@ -204,7 +205,7 @@ namespace ZapretManager.Infrastructure_
             return null;
         }
 
-        private async Task StopProcesses(string processName)
+        private static async Task StopProcesses(string processName)
         {
             var runningProcesses = Process.GetProcesses()
                 .Where(p => p.ProcessName.Contains(processName, StringComparison.OrdinalIgnoreCase));
@@ -214,6 +215,25 @@ namespace ZapretManager.Infrastructure_
                 process.Kill();
                 process.WaitForExit(1000);
             }
+        }
+
+        private static void RunSc(string action, string serviceName)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "sc.exe",
+                    Arguments = $"{action} {serviceName}",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                using var process = Process.Start(psi);
+                process?.WaitForExit(3000);
+            }
+            catch { }
         }
 
         public async Task<bool> openProcess(string pathToFile, string processName)

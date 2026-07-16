@@ -7,6 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
 	<UseWindowsForms>true</UseWindowsForms>
+	<AssemblyTitle>Zapret Manager</AssemblyTitle>
+	<ApplicationIcon>ZM icon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +29,10 @@
     <None Remove="Assets\Logos\telegramLogo.png" />
     <None Remove="Assets\Main.png" />
     <None Remove="Styles\Fonts\Outfit-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ZM icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
