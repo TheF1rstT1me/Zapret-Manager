@@ -78,6 +78,10 @@ namespace ZapretManager.UI_1
                 "Select \"new.txt\" file for new directory or .bat for update current", "New Directory File|new.txt|ALT file|*.bat");
             zapretFolder.OnChanged = async (newDirectory) =>
             {
+                WeakReferenceMessenger.Default.Send(new ChangedDirectory(
+                    "Zapret",
+                newDirectory, _workerService.GetFilePath(_settings, "Zapret")));
+
                 FileInfo fileInfo = new FileInfo(newDirectory);
 
                 if (fileInfo.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase)) newDirectory = fileInfo.Directory!.FullName;
@@ -85,11 +89,7 @@ namespace ZapretManager.UI_1
                 zapretFolder.PathFolder = newDirectory.Substring(0, Constants.PATH_VISIBLE_LENGTH) + "...";
                 bool altsHavent = await _workerService.CheckAltsZapret(fileInfo.Directory!);
 
-                if (altsHavent)
-                {
-                    _dialogService.ShowMessage("Select the version! (If you are sure that you have an outdated version installed: select any version below the current one and click update to reinstall zapret in your folder)");
-                }
-                else
+                if (!altsHavent)
                 {
                     _dialogService.ShowMessage("ZAPRET NOT FOUND IN THE FOLDER!\n\nClick 'update' in the main menu to install zapret in this folder (Do not touch the version field, the value will set itself after the update)");
                 };
@@ -103,6 +103,11 @@ namespace ZapretManager.UI_1
                 "Select \"new.txt\" file for new directory or .exe for update current", "New Directory File|new.txt|TgWsProxy file|*.exe");
             proxyFolder.OnChanged = async (newDirectory) =>
             {
+
+                WeakReferenceMessenger.Default.Send(new ChangedDirectory(
+                    "TgWsProxy",
+                newDirectory, _workerService.GetFilePath(_settings, "TgWsProxy")));
+
                 FileInfo fileInfo = new FileInfo(newDirectory);
 
                 if (fileInfo.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase)) newDirectory = fileInfo.Directory!.FullName;
@@ -110,11 +115,7 @@ namespace ZapretManager.UI_1
 
                 bool haveTgWsProxy = await _workerService.CheckTgWsProxyExe(fileInfo.Directory!);
 
-                if (haveTgWsProxy)
-                {
-                    _dialogService.ShowMessage("Select the version! (If you are sure that you have an outdated version installed: select any version below the current one and click update to reinstall TgWsProxy in your folder)");
-                }
-                else
+                if (!haveTgWsProxy)
                 {
                     _dialogService.ShowMessage("TGWSPROXY NOT FOUND IN THE FOLDER!\n\nClick 'update' in the main menu to install TgWsProxy in this folder (Do not touch the version field, the value will set itself after the update)");
                 }
@@ -207,10 +208,6 @@ namespace ZapretManager.UI_1
 
             if (File.Exists(result))
             {
-                WeakReferenceMessenger.Default.Send(new ChangedDirectory(
-                    folderSetting.Title.Contains("Zapret", StringComparison.OrdinalIgnoreCase) ? "Zapret" : "TgWsProxy",
-                    result)
-                );
                 folderSetting.OnChanged?.Invoke(result);
                 return;
             };

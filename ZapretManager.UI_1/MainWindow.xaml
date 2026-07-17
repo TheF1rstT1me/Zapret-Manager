@@ -9,7 +9,7 @@
         
         mc:Ignorable="d"
         Background="Transparent"
-        Title="MainWindow"
+        Title="Zapret Manager"
         
         WindowStyle="None"
         

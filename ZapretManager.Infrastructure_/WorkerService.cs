@@ -128,11 +128,15 @@ namespace ZapretManager.Infrastructure_
                         Path.Combine(directoryInfo.FullName, "lists", "list-general.txt"), ListsSaved, System.Text.Encoding.UTF8
                     ); 
                 }
+
+                await File.WriteAllTextAsync(
+                        Path.Combine(directoryInfo.FullName, "curversion.txt"), TagNameVersion, System.Text.Encoding.UTF8
+                );
                 return (extracted, directoryInfo.FullName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка распаковки: {ex.Message}");
+                MessageBox.Show($"ERROR: {ex.Message}");
                 return (false, null);
             }
         }
@@ -166,6 +170,9 @@ namespace ZapretManager.Infrastructure_
             try
             {
                 File.Move(downloadedFile, Path.Combine(directoryInfo.FullName, downloadedFileName));
+                await File.WriteAllTextAsync(
+                    Path.Combine(directoryInfo.FullName, "curversion.txt"), TagNameVersion, System.Text.Encoding.UTF8
+                );
                 return (true, Path.Combine(directoryInfo.FullName, downloadedFileName));
             }
             catch (Exception ex)

@@ -7,17 +7,11 @@ namespace ZapretManager.UI_1
 
     public partial class MainWindow : Window
     {
-        private readonly IGitHubService _gitHubService;
-        private readonly IZapretContext _zapretContext;
         // private CancellationTokenSource? _cts;
 
-        public MainWindow(MainViewModel viewModel, IGitHubService gitHubService, IZapretContext zapretContext)
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-
-            _gitHubService = gitHubService;
-            _zapretContext = zapretContext;
-
             DataContext = viewModel;
         }
 

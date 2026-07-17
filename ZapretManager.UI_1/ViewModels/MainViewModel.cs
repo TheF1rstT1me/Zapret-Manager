@@ -1,12 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using System.IO;
 using ZapretManager.Core_.Exceptions;
 using ZapretManager.Core_.Interfaces;
 using ZapretManager.Core_.Messages;
 using ZapretManager.Core_.Models;
 
 using MessageBox = System.Windows.MessageBox;
+using Constants = ZapretManager.Core_.Models.Constants;
 
 namespace ZapretManager.UI_1
 {
@@ -34,7 +36,7 @@ namespace ZapretManager.UI_1
             );
 
             WeakReferenceMessenger.Default.Register<ChangedDirectory>(this, async (recipient, message)
-                => await ProcessChangeDirectory(message.Mode, message.NewDirectory)
+                => await ProcessChangeDirectory(message.Mode, message.NewDirectory, message.OldDirectory)
             );
         }
 
@@ -206,14 +208,46 @@ namespace ZapretManager.UI_1
             UpdateUI();
         }
 
-        private async Task ProcessChangeDirectory(string modeChanged, string directory)
+        private async Task ProcessChangeDirectory(string modeChanged, string directory, string oldDirectory)
         {
+
+            string curVersionPath = "";
+            DirectoryInfo curDir = Directory.Exists(directory) ? new DirectoryInfo(directory) : new FileInfo(directory).Directory!;
+
+            if (oldDirectory != string.Empty)
+            {
+                DirectoryInfo oldDir = Directory.Exists(oldDirectory) ? new DirectoryInfo(oldDirectory) : new FileInfo(oldDirectory).Directory!;
+                if (curDir.Name == oldDir.Name) return;
+            }
+
+            curVersionPath = Path.Combine(curDir.FullName, "curversion.txt");
+
             switch (modeChanged)
             {
                 case "Zapret":
+                    if (File.Exists(curVersionPath))
+                    {
+                        string curTag = await File.ReadAllTextAsync(curVersionPath);
+
+                        _settings.Versions.ZapretInstalled = curTag;
+                        _settings.Versions.Zapret = curTag;
+
+                        break;
+                    }
+
                     _settings.Versions.ZapretInstalled = "";
                     break;
                 case "TgWsProxy":
+                    if (File.Exists(curVersionPath))
+                    {
+                        string curTag = await File.ReadAllTextAsync(curVersionPath);
+
+                        _settings.Versions.TgWsProxyInstalled = curTag;
+                        _settings.Versions.TgWsProxy = curTag;
+
+                        break;
+                    }
+
                     _settings.Versions.TgWsProxyInstalled = "";
                     break;
                 default:
