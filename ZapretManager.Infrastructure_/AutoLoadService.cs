@@ -18,7 +18,7 @@ namespace ZapretManager.Infrastructure_
             #endif
 
             var exePath = GetExePath();
-            var args = $"/create /tn \"{AppName}\" /tr \"\\\"{exePath}\\\"\" /sc onlogon /delay 0000:30 /f";
+            var args = $"/create /tn \"{AppName}\" /tr \"\\\"{exePath}\\\"\" /sc onlogon /delay 0000:30 /rl highest /f";
 
             Process.Start(new ProcessStartInfo
             {
