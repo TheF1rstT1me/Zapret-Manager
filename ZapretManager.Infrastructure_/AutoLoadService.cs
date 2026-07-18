@@ -1,17 +1,10 @@
-﻿using Microsoft.Win32;
-using SharpCompress.Archives;
-using SharpCompress.Common;
-using System.Diagnostics;
-using System.Windows.Forms;
-using ZapretManager.Core_.Exceptions;
+﻿using System.Diagnostics;
 using ZapretManager.Core_.Interfaces;
-using ZapretManager.Core_.Models;
 
 namespace ZapretManager.Infrastructure_
 {
     public class AutoLoadService: IAutoLoadService
     {
-        private const string RegistryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private const string AppName = "ZapretManager";
 
         private static string GetExePath() =>
@@ -24,20 +17,42 @@ namespace ZapretManager.Infrastructure_
                 return;
             #endif
 
-            using var key = Registry.CurrentUser.OpenSubKey(RegistryKey, writable: true);
-            key?.SetValue(AppName, $"\"{GetExePath()}\"");
+            var exePath = GetExePath();
+            var args = $"/create /tn \"{AppName}\" /tr \"\\\"{exePath}\\\"\" /sc onlogon /delay 0000:30 /f";
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "schtasks",
+                Arguments = args,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            });
         }
 
         public void DisableAutostart()
         {
-            using var key = Registry.CurrentUser.OpenSubKey(RegistryKey, writable: true);
-            key?.DeleteValue(AppName, throwOnMissingValue: false);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "schtasks",
+                Arguments = $"/delete /tn \"{AppName}\" /f",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            });
         }
 
         public bool IsAutostartEnabled()
         {
-            using var key = Registry.CurrentUser.OpenSubKey(RegistryKey);
-            return key?.GetValue(AppName) != null;
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "schtasks",
+                Arguments = $"/query /tn \"{AppName}\"",
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            })!;
+
+            process.WaitForExit();
+            return process.ExitCode == 0;
         }
     }
 }
